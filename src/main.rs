@@ -14,26 +14,35 @@ fn main() {
     loop{
         
     
-    println!("じゃんけんの手を入力してください");
-    println!("入力例: グー、チョキ、パー");
+println!("じゃんけんの手を選んでください");
+println!("1: グー  2: チョキ  3: パー  0: ゲームを終了");
 
     let mut input = String::new();
     io::stdin().read_line(&mut input).expect("入力エラー");
     let input = input.trim();
 
-    let player = if input == "グー" {
-        Hand::Rock
-    } else if input == "チョキ" {
-        Hand::Scissors
-    } else if input == "パー" {
-        Hand::Paper
-    } else if input == "quit" {
+    let num:i32 = match input.parse() {
+        Ok(n) => n,
+        Err(_) => {
+            println!("指定された数字を入力してください。");
+            continue;
+        }
+    };
+
+    let player = match num {
+         1 => Hand::Rock,
+    2 => Hand::Scissors,
+    3 => Hand::Paper,
+    0 => {
         println!("ゲームを終了します。");
-        println!("記録: {}連勝",win_count);
-        break;    
-    } else {
-        println!("グー・チョキ・パーで入力してください");
+        println!("記録: {}連勝", win_count);
+        break;
+    }
+    _ => {
+        println!("0〜3の数字を入力してください");
         continue;
+    }
+        
     };
 
     let num = rand::thread_rng().gen_range(0..3);
