@@ -27,6 +27,10 @@ fn main() {
         Hand::Scissors
     } else if input == "パー" {
         Hand::Paper
+    } else if input == "quit" {
+        println!("ゲームを終了します。");
+        println!("記録: {}連勝",win_count);
+        break;    
     } else {
         println!("グー・チョキ・パーで入力してください");
         continue;
