@@ -10,6 +10,10 @@ enum Hand {
 }
 
 fn main() {
+    let mut win_count = 0;
+    loop{
+        
+    
     println!("じゃんけんの手を入力してください");
     println!("入力例: グー、チョキ、パー");
 
@@ -25,7 +29,7 @@ fn main() {
         Hand::Paper
     } else {
         println!("グー・チョキ・パーで入力してください");
-        return;
+        continue;
     };
 
     let num = rand::thread_rng().gen_range(0..3);
@@ -58,12 +62,17 @@ fn main() {
     match (player, computer) {
         (Hand::Rock,     Hand::Scissors) |
         (Hand::Scissors, Hand::Paper)    |
-        (Hand::Paper,    Hand::Rock)     => println!("あなたの勝ちです🎉"),
-
+        (Hand::Paper,    Hand::Rock)     => {
+            println!("あなたの勝ちです🎉");
+            win_count += 1;
+        }
         (Hand::Rock,     Hand::Rock)     |
         (Hand::Scissors, Hand::Scissors) |
         (Hand::Paper,    Hand::Paper)    => println!("あいこです🤝"),
 
-        _ => println!("あなたの負けです😢"),
+        _ => {
+            println!("あなたの負けです😢");
+            println!("記録: {}連勝",win_count);
+            break;
     }
-}
+    }}}
