@@ -10,6 +10,13 @@ enum Hand {
     Paper,
 }
 
+#[derive(Copy, Clone)]
+enum Outcome {
+    Win,
+    Draw,
+    Lose,
+}
+
 fn main() {
     let mut win_count = 0;
     loop {
@@ -45,7 +52,6 @@ fn main() {
 
         let computer = get_computer_hand();
 
- 
         let player_str = to_str(player);
         let computer_str = to_str(computer);
 
@@ -58,19 +64,16 @@ fn main() {
         println!("相手の手: {}", computer_str);
         thread::sleep(Duration::from_secs(1));
 
-        match (player, computer) {
-            (Hand::Rock, Hand::Scissors)
-            | (Hand::Scissors, Hand::Paper)
-            | (Hand::Paper, Hand::Rock) => {
-                println!("あなたの勝ちです🎉");
+        match judge(player, computer) {
+            Outcome::Win => {
+                println!("あなたの勝ちです");
                 win_count += 1;
             }
-            (Hand::Rock, Hand::Rock)
-            | (Hand::Scissors, Hand::Scissors)
-            | (Hand::Paper, Hand::Paper) => println!("あいこです🤝"),
-
-            _ => {
-                println!("あなたの負けです😢");
+            Outcome::Draw => {
+                println!("あいこです");
+            }
+            Outcome::Lose => {
+                println!("あなたの負けです");
                 println!("記録: {}連勝", win_count);
                 break;
             }
@@ -87,10 +90,23 @@ fn to_str(hand: Hand) -> &'static str {
 }
 
 fn get_computer_hand() -> Hand {
-        let num = rand::thread_rng().gen_range(0..3);
-        match num {
-            0 => Hand::Rock,
-            1 => Hand::Scissors,
-            _ => Hand::Paper,
-        }
+    let num = rand::thread_rng().gen_range(0..3);
+    match num {
+        0 => Hand::Rock,
+        1 => Hand::Scissors,
+        _ => Hand::Paper,
+    }
+}
+
+fn judge(player: Hand, computer: Hand) -> Outcome {
+    match (player, computer) {
+        (Hand::Rock, Hand::Scissors)
+        | (Hand::Scissors, Hand::Paper)
+        | (Hand::Paper, Hand::Rock) => Outcome::Win,
+        (Hand::Rock, Hand::Rock)
+        | (Hand::Scissors, Hand::Scissors)
+        | (Hand::Paper, Hand::Paper) => Outcome::Draw,
+
+        _ => Outcome::Lose,
+    }
 }
