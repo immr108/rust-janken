@@ -10,6 +10,16 @@ enum Hand {
     Paper,
 }
 
+impl Hand {
+    fn to_str(self) -> &'static str {
+        match self {
+            Hand::Rock => "グー",
+            Hand::Scissors => "チョキ",
+            Hand::Paper => "パー",
+        }
+    }
+}
+
 #[derive(Copy, Clone)]
 enum Outcome {
     Win,
@@ -45,8 +55,8 @@ fn main() {
 
         let computer = get_computer_hand();
 
-        let player_str = to_str(player);
-        let computer_str = to_str(computer);
+        let player_str = player.to_str();
+        let computer_str = computer.to_str();
 
         println!("じゃんけん...");
         thread::sleep(Duration::from_secs(1));
@@ -71,14 +81,6 @@ fn main() {
                 break;
             }
         }
-    }
-}
-
-fn to_str(hand: Hand) -> &'static str {
-    match hand {
-        Hand::Rock => "グー",
-        Hand::Scissors => "チョキ",
-        Hand::Paper => "パー",
     }
 }
 
