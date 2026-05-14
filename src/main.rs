@@ -23,16 +23,9 @@ fn main() {
         println!("じゃんけんの手を選んでください");
         println!("1: グー  2: チョキ  3: パー  0: ゲームを終了");
 
-        let mut input = String::new();
-        io::stdin().read_line(&mut input).expect("入力エラー");
-        let input = input.trim();
-
-        let num: i32 = match input.parse() {
-            Ok(n) => n,
-            Err(_) => {
-                println!("指定された数字を入力してください。");
-                continue;
-            }
+        let num = match get_input() {
+            Some(n) => n,
+            None => continue,
         };
 
         let player = match num {
@@ -108,5 +101,18 @@ fn judge(player: Hand, computer: Hand) -> Outcome {
         | (Hand::Paper, Hand::Paper) => Outcome::Draw,
 
         _ => Outcome::Lose,
+    }
+}
+
+fn get_input() -> Option<i32> {
+    let mut input = String::new();
+    io::stdin().read_line(&mut input).expect("入力エラー");
+    let input = input.trim();
+    match input.parse::<i32>() {
+        Ok(n) => Some(n),
+        Err(_) => {
+            println!("指定された数字を入力してください");
+            None
+        }
     }
 }
